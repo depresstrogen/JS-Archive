@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <p>Look at <img src="img/1.png" alt="Space 1"> and
+        <img src="img/2.png" alt="Space 2">.
+    </p>
+    <p><button onclick="replaceImages()">Replace</button></p>
+    <script>
+        function replaceImages() {
+            let images = document.body.getElementsByTagName("img");
+            for (let i = images.length - 1; i >= 0; i--) {
+                let image = images[i];
+                if (image.alt) {
+                    let text = document.createTextNode(image.alt);
+                    image.parentNode.replaceChild(text, image);
+                }
+                
+            }
+        }
+    </script>
+</body>

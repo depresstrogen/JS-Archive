@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <div class=Exks data-tabname=Exks>
+        <p data-tabname=topText>Top Text</p>
+        <div class=half data-tabname=half>
+            <div class=middleDiv data-tabname=middleDiv>
+                <p data-tabname=middleText>Middle Text</p>
+            </div>
+            <p data-tabname=bottomText>Bottom Text</p>
+        </div>
+    </div>
+    <script>
+        function asTabs(node) {d
+            if (node == undefined) {
+                node = document.body;
+            }
+
+            let oldInterface = document.querySelector(".tabInterface");
+            if (oldInterface != undefined) {
+                oldInterface.remove();
+            }
+
+            let tabInterface = document.createElement("div");
+            tabInterface.className = "tabInterface";
+
+            let parentTab = makeParentTab(node);
+            tabInterface.appendChild(parentTab);
+
+            let activeTabs = makeChildTabs(node);
+            tabInterface.appendChild(activeTabs);
+
+            document.body.appendChild(tabInterface);
+        }
+
+        function makeParentTab(node) {
+            let parentTabDiv = document.createElement("div");
+            parentTabDiv.className = "parentTabDiv";
+
+            let parentTab = document.createElement("button");
+            parentTab.isButton = true;
+
+            console.log(node.parentNode);
+
+            console.log(node.dataset.tabname + "AAA");
+
+            if (node.dataset.tabname == undefined) {
+                parentTab.innerHTML = parent;
+            } else {
+                parentTab.innerHTML = node.dataset.tabname
+            }
+
+            parentTab.addEventListener("mousedown", event => {
+                let toDelete = document.querySelector(".tabInterface");
+                let newNode = node.parentNode;
+                console.log(newNode);
+                toDelete.remove();
+                asTabs(newNode);
+
+            });
+
+            parentTabDiv.appendChild(parentTab);
+            return parentTabDiv;
+        }
+
+        function makeChildTabs(node) {
+            
+            let activeTabs = document.createElement("div");
+            activeTabs.className = "activeTabs";
+            let children = node.children;
+
+            for (let i = 0; i < children.length; i++) {
+                console.log(children[i].dataset.tabname);
+                let tab = document.createElement("button");
+                tab.isButton = true;
+                tab.innerHTML = children[i].dataset.tabname;
+                tab.addEventListener("mousedown", event => {
+                    let toDelete = document.querySelector(".tabInterface");
+                    let newNode = document.querySelector('.' + tab.innerHTML);
+                    if (newNode.nodeName == "DIV") {
+                        console.log(newNode);
+                        toDelete.remove();
+                        asTabs(newNode);
+                    }
+                });
+                activeTabs.appendChild(tab);
+            }
+            return activeTabs;
+        }
+        asTabs();
+    </script>
+</body>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <style>
+        .balloon {
+            color: red;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-right: -50%;
+            transform: translate(-50%, -50%)
+        }
+    </style>
+
+    <div class="balloon">🎈</div>
+
+    <script>
+        let balloonSize = 20;
+        /*
+        37 = left
+        38 = up
+        39 = right
+        40 = down
+        */
+        window.addEventListener("keydown", event => {
+            if (event.key == "ArrowUp") {
+                console.log("a");
+                inflate(10);
+            }
+        });
+
+        function inflate(percent) {
+            balloonSize *= 1 + (percent * 0.01);
+            let balloonArr = document.body.getElementsByClassName("balloon");
+            let balloon = balloonArr[0];
+            if(balloonSize > 600) {
+                balloon.innerHTML = "💥";
+                balloonSize = 600;
+                window.removeEventListener("keydown", null);
+            }
+            balloon.style.fontSize = balloonSize + "px";
+            console.log(balloonSize);
+        }
+
+    // function styleBalloon(balloon) {
+    //     balloon.style.fontSize = "600px";
+    //     balloon.style.position = "absolute";
+    //     balloon.style.top = "50%"
+    //     balloon.style.left = "50%";
+    //     balloon.style.marginRight = "-50%";
+    //     balloon.style.transform = "translate(-50%, -50%)";
+    // }
+    </script>
+</body>

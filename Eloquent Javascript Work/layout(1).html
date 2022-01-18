@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <p><span id="one"></span></p>
+    <p><span id="two"></span></p>
+    <script>
+        function time(name, action) {
+            let start = Date.now(); // Current time in milliseconds
+            action();
+            console.log(name, "took", Date.now() - start, "ms");
+        }
+        time("naive", () => {
+            let target = document.getElementById("one");
+            while (target.offsetWidth < 2000) {
+                target.appendChild(document.createTextNode("X"));
+            }
+        });
+        time("clever", function () {
+            let target = document.getElementById("two");
+            242
+            target.appendChild(document.createTextNode("XXXXX"));
+            let total = Math.ceil(2000 / (target.offsetWidth / 5));
+            target.firstChild.nodeValue = "X".repeat(total);
+        });
+    // → clever took 1 ms
+
+    let para = document.body.getElementsByTagName("p");
+    para[0].style.color = "green";
+    para[1].style.color = "purple";
+    </script>
+</body>

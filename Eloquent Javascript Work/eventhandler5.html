@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <a href="https://developer.mozilla.org/">MDN</a>
+    <script>
+        let link = document.querySelector("a");
+        link.addEventListener("click", event => {
+            console.log("Nope.");
+            event.preventDefault();
+        });
+    </script>
+</body>

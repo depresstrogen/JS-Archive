@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <blockquote id="quote">
+        No book can ever be finished. While working on it we learn
+        just enough to find it immature the moment we turn away
+        from it.
+    </blockquote>
+    <script>
+        // Type of html, children
+        function elt(type, ...children) {
+            // Make new element
+            let node = document.createElement(type);
+            // Append the children to this element
+            for (let child of children) {
+                // Force text
+                if (typeof child != "string") node.appendChild(child);
+                else node.appendChild(document.createTextNode(child));
+            }
+            return node;
+        }
+        // Get the object with the quote id
+        document.getElementById("quote").appendChild(
+            elt("footer", "—",
+                elt("strong", "Karl Popper"),
+                ", preface to the second edition of ",
+                elt("em", "The Open Society and Its Enemies"),
+                ", 1950"));
+    </script>
+    
+    <p style="border: 3px solid red">
+        I'm boxed in
+    </p>
+    
+    <p><button onclick="getOffset()">Replace</button></p>
+    <script>
+        let para = document.body.getElementsByTagName("p")[0];
+        function getOffset() {
+            console.log("clientHeight:", para.clientHeight);
+            console.log("offsetHeight:", para.offsetHeight);
+        }
+    </script>
+</body>

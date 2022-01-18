@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <p>Zero</p>
+    <p>One</p>
+    <p>Two</p>
+    <p>Three</p>
+    <script>
+        let paragraphs = document.body.getElementsByTagName("p");
+        document.body.insertBefore(paragraphs[2], paragraphs[0]);
+        document.body.insertBefore(paragraphs[3], paragraphs[2]);
+    </script>
+</body>

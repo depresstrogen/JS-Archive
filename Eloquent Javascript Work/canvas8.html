@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        let cx = document.querySelector("canvas");
+        cx.width  = window.innerWidth;
+        cx.height = window.innerHeight;
+
+        cx = cx.getContext("2d");
+        let img = document.createElement("img");
+        img.src = "img/2.png";
+        let spriteW = 256, spriteH = 256;
+        img.addEventListener("load", () => {
+            flipHorizontally(cx, 100 + spriteW / 2);
+            cx.drawImage(img, 0, 0, spriteW, spriteH,
+                100, 0, spriteW, spriteH);
+        });
+
+        function flipHorizontally(context, around) {
+            context.translate(around, 0);
+            context.scale(-1, 1);
+            context.translate(-around, 0);
+        }
+
+    </script>
+</body>

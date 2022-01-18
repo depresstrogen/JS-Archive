@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <style>
+        body {
+            height: 200px;
+            background: rgb(125, 173, 118);
+        }
+
+        .trail {
+            height: 8px;
+            width: 8px;
+            background: purple;
+            position: absolute;
+        }
+    </style>
+    <script>
+        let trails = [];
+        let trailIndex = 0;
+        let trailMax = 20;
+        window.addEventListener("mousemove", event => {
+            let trail = document.createElement("div");
+            trail.className = "trail";
+            trail.style.left = (event.pageX - trail.style.width) + "px";
+            trail.style.top = (event.pageY - trail.style.height) + "px";
+            document.body.appendChild(trail);
+            console.log("1");
+            if (trails[trailIndex] != undefined) {
+                trails[trailIndex].remove();
+                console.log("A");
+            }
+            trails[trailIndex] = trail;
+            trailIndex++;
+            if (trailIndex >= trailMax) {
+                trailIndex = 0;
+            }
+            
+            console.log(trailIndex);
+        });
+    </script>
+</body>

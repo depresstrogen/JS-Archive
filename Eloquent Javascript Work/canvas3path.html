@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <canvas></canvas>
+    <script>
+        let cx = document.querySelector("canvas");
+        cx.width  = window.innerWidth;
+        cx.height = window.innerHeight;
+
+        cx = cx.getContext("2d");
+        // Lines
+        cx.beginPath();
+        for (let y = 10; y < 100; y += 10) {
+            cx.moveTo(10, y);
+            cx.lineTo(90, y);
+        }
+        cx.stroke();
+
+        //Filled Triangle
+        cx.beginPath();
+        cx.moveTo(150, 10);
+        cx.lineTo(110, 70);
+        cx.lineTo(190, 70);
+        cx.fill();
+
+        // Triangle with bend
+        cx.beginPath();
+        cx.moveTo(210, 90);
+        // control=(60,10) goal=(90,90)
+        cx.quadraticCurveTo(260, 10, 290, 90);
+        cx.lineTo(260, 10);
+        cx.closePath();
+        cx.stroke();
+
+
+        cx.beginPath();
+        cx.moveTo(10, 190);
+        // control1=(10,10) control2=(90,10) goal=(50,90)
+        cx.bezierCurveTo(10, 110, 90, 110, 50, 190);
+        cx.lineTo(90, 110);
+        cx.lineTo(10, 110);
+        cx.closePath();
+        cx.stroke();
+
+    </script>
+</body>

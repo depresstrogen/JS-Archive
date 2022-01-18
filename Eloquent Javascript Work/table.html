@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <script>
+        let mountains = [{
+            name: "Everest",
+            height: 8000,
+            place: "Nepal"
+        }, {
+            name: "Columbia",
+            height: 3747,
+            place: "Canada"
+        }];
+
+        function makeTable(array) {
+            const baseTable = document.createElement('table');
+            for (count in mountains) {
+                const header = document.createElement('tr');
+                mountain = mountains[count];
+                console.log(JSON.stringify(mountain));
+                for (key in mountain) {
+                    const subheader = document.createElement('td');
+                    subheader.appendChild(document.createTextNode(mountain[key]));
+                    if(typeof mountain[key] == "number") {
+                        subheader.style.color = "purple";
+                        subheader.style.textAlign = "right";
+                    }
+                    header.appendChild(subheader);
+                    subheader.style.padding = "5px";
+                }
+                
+                baseTable.appendChild(header);
+            }
+            baseTable.id = "mountain";
+            baseTable.width = "20%";
+            return baseTable;
+        }
+
+        function fancyTable(table) {
+            table.border = "3px";
+            table.style.borderCollapse = "collapse";
+            table.style.margin = "30px";
+            table.style.padding = "50px";
+            return table;
+        }
+        //const temp = document.createTextNode("A")
+        //element.appendChild(temp)
+        document.body.appendChild(fancyTable(makeTable(mountains)));
+    </script>
+</body>

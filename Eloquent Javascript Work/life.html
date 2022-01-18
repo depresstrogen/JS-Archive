@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <style>
+        INPUT[type=checkbox] {
+            background-color: #DDD;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            position: relative;
+            margin: 0px;
+            margin-bottom: -4px;
+            border-radius: 0px;
+            border-color: black;
+            border: 1px solid;
+        }
+
+        INPUT[type=checkbox]:checked {
+            background-color: #9e23cf;
+            background: #9e23cf no-repeat;
+        }
+    </style>
+
+    <script>
+        let boardX = 30;
+        let boardY = 20;
+
+        let clientX = window.innerWidth;
+        let clientY = window.innerHeight;
+
+
+        let blockSize = 30;
+
+        window.addEventListener('resize', function (event) {
+            setBlockSize();
+            for(let i = 0; i < boardY; i++) {
+                for(let j = 0; j < boardX; j++) {
+                    checkboxArray[i][j].style.width = blockSize + "px";
+                    checkboxArray[i][j].style.height = blockSize + "px";
+                }
+            }
+            console.log(window.innerWidth);
+        });
+
+
+        let boardArray = Array.from(Array(boardY), () => new Array(boardX));
+        function randomizeBoard() {
+            for (let i = 0; i < boardY; i++) {
+                for (let j = 0; j < boardX; j++) {
+                    let rng = Math.random() * 3;
+                    if (rng < 1) {
+                        boardArray[i][j] = 1;
+                    } else {
+                        boardArray[i][j] = 0;
+                    }
+                }
+            }
+        }
+
+        let checkboxArray = Array.from(Array(boardY), () => new Array(boardX));
+        function makeCheckArray() {
+            let checkboxDiv = document.createElement("div");
+            checkboxDiv.className = "checkboxDiv";
+            document.body.appendChild(checkboxDiv);
+            for (let i = 0; i < boardY; i++) {
+                let tempDiv = document.createElement("div");
+                tempDiv.className = "row";
+                tempDiv.id = "Row " + i;
+                for (let j = 0; j < boardX; j++) {
+                    let tempBox = document.createElement("input");
+                    tempBox.type = "checkbox";
+                    tempBox.id = i + "," + j;
+                    tempBox.checked = boardArray[i][j];
+                    tempBox.style.width = blockSize + "px";
+                    tempBox.style.height = blockSize + "px";
+                    tempBox.addEventListener("change", () => {
+                        let id = String(tempBox.id).split(',');
+                        let x = id[0];
+                        let y = id[1];
+                        boardArray[x][y] = tempBox.checked;
+                        console.log(tempBox.checked);
+                    })
+                    checkboxArray[i][j] = tempBox;
+                    tempDiv.appendChild(tempBox);
+                }
+                checkboxDiv.appendChild(tempDiv);
+            }
+        }
+
+        function makeButtons() {
+            let buttonDiv = document.createElement("div");
+            buttonDiv.className = "buttonDiv";
+            document.body.appendChild(buttonDiv);
+            let advance = document.createElement("button");
+            advance.innerHTML = "Next Generation";
+
+            buttonDiv.appendChild(advance);
+            advance.addEventListener("mouseup", event => {
+                runGen();
+            });
+
+            let cls = document.createElement("button");
+            cls.innerHTML = "Clear Screen";
+
+            buttonDiv.appendChild(cls);
+            cls.addEventListener("mouseup", event => {
+                clearScreen();
+            });
+        }
+
+
+
+        function setBlockSize() {
+            clientX = window.innerWidth;
+            clientY = window.innerHeight;
+            if (clientX * 20> clientY * 30) {
+                blockSize = clientY / 22;
+            } else {
+                blockSize = clientX / 32;
+            }
+            console.log(clientX > clientY * 1.33);
+        }
+
+
+        function runGen() {
+            let tempArray = Array.from(Array(boardY), () => new Array(boardX));
+            for (let i = 0; i < boardY; i++) {
+                for (let j = 0; j < boardX; j++) {
+                    let squaresAround = 0;
+                    if (i - 1 >= 0) {
+                        if (j - 1 >= 0) {
+                            if (boardArray[i - 1][j - 1] == 1) squaresAround++;
+                        }
+                        if (boardArray[i - 1][j] == 1) squaresAround++;
+                        if (j + 1 < boardX) {
+                            if (boardArray[i - 1][j + 1] == 1) squaresAround++;
+                        }
+                    }
+                    if (j - 1 >= 0) {
+                        if (boardArray[i][j - 1] == 1) squaresAround++;
+                    }
+                    if (j + 1 < boardX) {
+                        if (boardArray[i][j + 1] == 1) squaresAround++;
+                    }
+                    if (i + 1 < boardY) {
+                        if (j - 1 >= 0) {
+                            if (boardArray[i + 1][j - 1] == 1) squaresAround++;
+                        }
+                        if (boardArray[i + 1][j] == 1) squaresAround++;
+                        if (j + 1 < boardX) {
+                            if (boardArray[i + 1][j + 1] == 1) squaresAround++;
+                        }
+                    }
+                    console.log(squaresAround);
+                    tempArray[i][j] = squaresAround;
+                }
+            }
+            for (let i = 0; i < boardY; i++) {
+                //console.log(tempArray[i]);
+                for (let j = 0; j < boardX; j++) {
+
+                    let square = tempArray[i][j];
+                    if (square > 3 || square < 2) {
+                        boardArray[i][j] = 0;
+                    } else if (boardArray[i][j] == 1) {
+                        boardArray[i][j] = 1;
+                    } else if (boardArray[i][j] == 0 && square == 3) {
+                        boardArray[i][j] = 1;
+                    }
+                }
+            }
+            changeBoxes();
+        }
+
+        function changeBoxes() {
+            for (let i = 0; i < boardY; i++) {
+                for (let j = 0; j < boardX; j++) {
+                    //console.log(boardArray[i][j]);
+                    let currentBox = checkboxArray[i][j];
+                    currentBox.checked = boardArray[i][j];
+                }
+            }
+        }
+
+        function clearScreen() {
+            for (let i = 0; i < boardY; i++) {
+                for (let j = 0; j < boardX; j++) {
+                    boardArray[i][j] = 0;
+                    changeBoxes();
+                }
+            }
+        }
+
+        setBlockSize();
+        randomizeBoard();
+        makeCheckArray();
+        makeButtons();
+    </script>
+</body>

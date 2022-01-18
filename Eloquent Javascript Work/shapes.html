@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset=utf8>
+</head>
+
+<body>
+    <canvas>
+    </canvas>
+    <script>
+        let cx = document.querySelector("canvas");
+        cx.width = window.innerWidth;
+        cx.height = window.innerHeight;
+
+        cx = cx.getContext("2d");
+
+        function trap(posX, posY) {
+            cx.fillStyle = "black";
+            cx.beginPath();
+            cx.moveTo(posX, posY + 50);
+            cx.lineTo(20 + posX, posY);
+            cx.lineTo(80 + posX, posY);
+            cx.lineTo(100 + posX, 50 + posY);
+            cx.lineTo(posX, posY + 50);
+            cx.stroke();
+        }
+
+        function diamond(posX, posY) {
+            cx.fillStyle = "red";
+            cx.beginPath();
+            cx.moveTo(50 + posX, posY);
+            cx.lineTo(posX, posY + 50);
+            cx.lineTo(posX + 50, posY + 100);
+            cx.lineTo(posX + 100, posY + 50);
+            cx.lineTo(50 + posX, posY);
+            cx.fill();
+        }
+
+        function zigZag(posX, posY, inbetween, lineAmount) {
+            cx.fillStyle = "black";
+            let currentY = posY;
+            cx.beginPath();
+            cx.moveTo(posX, posY);
+            
+            for(let i = 0; i < lineAmount; i++) {
+                currentY += inbetween;
+                let currentX = 0;
+                if(i % 2 == 0) currentX = 100;
+                cx.lineTo(currentX + posX, currentY);
+                
+            }
+            cx.stroke();
+        }
+
+        function spiral(posX, posY, segments, rotations, distance) {
+            cx.fillStyle = "black";
+            //y = sin
+            //x = cos
+            let currentPosX = posX;
+            let currentPosY = posY;
+
+            let segPerRot = segments / rotations;
+
+            let anglePerSeg = (Math.PI * 2) / segPerRot
+
+            //Distance is based off 100 segments
+            distance = distance / (segments / 100);
+
+            cx.beginPath();
+            cx.moveTo(posX, posY);
+
+            for(let i = 0; i < segments; i++) {
+                let currentAngle = anglePerSeg * i;
+                let currentX = Math.cos(currentAngle);
+                let currentY = Math.sin(currentAngle);
+                let currentDistance = distance * i;
+
+                //console.log(currentAngle + " " + currentX + " " + currentY + " " + currentDistance);
+
+                cx.lineTo(posX + (currentX * currentDistance), posY + (currentY * currentDistance));
+            }
+            cx.stroke();
+        }
+
+        function star(posX, posY) {
+            cx.fillStyle = "#DDAA00";
+            //y = sin
+            //x = cos
+            let currentPosX = posX;
+            let currentPosY = posY;
+            let segments = 8;
+            let anglePerSeg = (Math.PI * 2) / segments;
+
+            //Distance is based off 100 segments
+
+
+            cx.beginPath();
+            cx.moveTo(posX, posY);
+
+            for(let i = 0; i <= segments; i++) {
+                let currentAngle = anglePerSeg * i;
+                let currentX = Math.cos(currentAngle);
+                let currentY = Math.sin(currentAngle);
+                let distance = 70;
+                //console.log(currentAngle + " " + currentX + " " + currentY + " " + currentDistance);
+                if( i == 0 ) {
+                    cx.moveTo(posX + (currentX * distance), posY + (currentY * distance));
+                }
+                cx.bezierCurveTo(posX, posY, posX, posY, posX + (currentX * distance), posY + (currentY * distance));
+            }
+            cx.fill();
+        }
+        trap(10,35);
+        diamond(120,10);
+        zigZag(230,10,10,10)
+        spiral(400,60, 100, 4, 0.5);
+        star(500,60);
+        
+    </script>
+</body>
